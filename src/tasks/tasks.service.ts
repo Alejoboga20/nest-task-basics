@@ -63,13 +63,13 @@ export class TasksService {
 
   updateTaskStatus(id: string, status: TaskStatus) {
     const task = this.getTaskById(id);
-    task.status = status.toUpperCase() as TaskStatus;
+    task.status = status;
 
     return task;
   }
 
   deleteTask(id: string): void {
     const task = this.getTaskById(id);
-    this.tasks = this.tasks.filter((task) => task.id !== task.id);
+    this.tasks = this.tasks.filter((task) => task.id !== id);
   }
 }
