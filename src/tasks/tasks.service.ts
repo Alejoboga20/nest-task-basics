@@ -31,6 +31,16 @@ export class TasksService {
     return this.tasksRepository.createTask(createTaskDto);
   }
 
+  async updateTaskStatus(id: string, status: TaskStatus): Promise<Task> {
+    const task = await this.getTaskById(id);
+
+    task.status = status;
+
+    await this.tasksRepository.save(task);
+
+    return task;
+  }
+
   async deleteTask(id: string): Promise<void> {
     const deleteResult = await this.tasksRepository.delete(id);
 
@@ -71,9 +81,5 @@ getAllTasks(): Task[] {
     return task;
   }
 
-  deleteTask(id: string): void {
-    const task = this.getTaskById(id);
-    this.tasks = this.tasks.filter((task) => task.id !== id);
-  }
 
 */
