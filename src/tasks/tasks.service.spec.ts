@@ -1,11 +1,13 @@
 import { Test } from '@nestjs/testing';
 import { User } from 'src/auth/user.entity';
+import { TaskStatus } from './task-status.enum';
 
 import { TasksRepository } from './tasks.repository';
 import { TasksService } from './tasks.service';
 
 const mockTasksRespository = () => ({
   getTasks: jest.fn(),
+  findOne: jest.fn(),
 });
 
 const mockUser: User = {
@@ -41,5 +43,22 @@ describe('TasksService', () => {
       expect(tasksRepository.getTasks).toHaveBeenCalled();
       expect(tasks).toEqual([]);
     });
+  });
+
+  describe('get tasks by id', () => {
+    it('calls TasksRepository.findOne and return the result', async () => {
+      const mockTask = {
+        title: 'Test title',
+        description: 'Test description',
+        id: 'testId',
+        status: TaskStatus.OPEN,
+      };
+
+      tasksRepository.findOne.mockResolvedValue(mockTask);
+      const result = await tasksService.getTaskById('testId', mockUser);
+      expect(result).toEqual(mockTask);
+    });
+
+    it('calls TasksRepository.findOne and handles error', () => {});
   });
 });
